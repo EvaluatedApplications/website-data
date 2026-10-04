@@ -1,0 +1,198 @@
+# Pre-registration: does the file total run above the declared spend by the size of the flagged repeats?
+
+Written 2026-10-03 (Session 29) BEFORE any confirmatory number is computed. Committed to git before the run so the
+commit time proves the order. Nothing outward is involved: all comparators are public statistics (Open Government Licence)
+and the councils' own published files.
+
+## The question (owner, 2026-10-03)
+"Whether the anomalies actually add up to the total number. Somewhat proving that duplicate payments happened."
+If a council's over-GBP500 file total runs ABOVE what the council declares it spent, by roughly the size of the repeats and
+twins we flag, that supports "these were real extra outgoings (or real errors in the published record)". If it does not, the
+flagged rows are more likely presentation artefacts, or the comparison cannot tell.
+
+## What I looked at before writing this (disclosure)
+While planning I printed ONE unit: Wokingham FY2023-24, file Net GBP 260.2m against Revenue Outturn running expenses
+GBP 220.0m (employees GBP 151.9m, total gross service expenditure GBP 371.9m). That unit is EXPLORATORY and is excluded from the
+confirmatory pool below. I have not looked at any other council's comparator. I have not computed any residual R or flagged
+total T for any unit.
+
+## Units
+A unit is a council x financial year (1 April to 31 March) with: (i) published rows whose PayDate covers all twelve months
+(each month holding at least 50% of that council's median month; a month missing or mostly empty excludes the unit), and
+(ii) published Revenue Outturn (RSX/RO) for that year. Years considered: 2022-23, 2023-24, 2024-25 (2025-26 is first-release
+and our files stop at Dec 2025). The pool is every unit that meets this rule across every council in the repository when the
+run is made; no unit is dropped or added because of how it looks. The pool is written to `export/budget_units.csv` before
+any residual is computed and is not edited afterwards. Calendar-year councils (Merton) are cut by PayDate, not by file tag.
+
+## Amendment 1 (2026-10-03, before any residual was computed for any council)
+The owner asked for Wokingham's reconciliation to be done first as a worked example, then the other five councils, then
+backfill of missing years, then new cities. Consequences, fixed now:
+1. EVERY Wokingham unit (all years) is EXPLORATORY: it is computed first, shown publicly as the worked example and used to
+   debug the pipeline, and it is EXCLUDED from the confirmatory pool. The confirmatory pool is every other council's qualifying
+   units, including councils added later. (This supersedes the earlier "Wokingham FY2023-24 only" disclosure.)
+2. Years considered widen from 2022-23..2024-25 to every financial year from 2017-18 that has (a) published Revenue Outturn,
+   (b) published Capital Outturn (COR A1) and (c) a complete twelve-month file by the coverage rule. 2025-26 is admitted only
+   for a council whose files cover April 2025 to March 2026, and is marked provisional (first-release outturn).
+3. The pool is frozen at run time in `export/budget_units.csv`; backfilled years that exist when the confirmatory run starts
+   are included; none is added or removed afterwards.
+4. Nothing else in this document changes: arms, K and T definitions, statistic, nulls, power rule, verdicts.
+
+## Amendment 2 (2026-10-03, before the first confirmatory residual was computed): stages
+Two backfill items need a person (West Berkshire before 2024-04: files and landing page 403 to my fetcher; Reading 2021-05:
+a corrupt Excel file). Waiting for them, and for new cities, would hold the test indefinitely, so the confirmatory test runs
+in stages and each stage's pool is frozen before its first residual:
+- STAGE 1 (primary, run once): every qualifying unit of the six councils held now, minus Wokingham (exploratory). Pool
+  frozen in `export/budget_units_stage1.csv`. This stage carries the pre-registered verdict.
+- STAGE 2 (replication): units added afterwards (the two person-supplied gaps, the big cities), each reported separately
+  with the same statistic, never merged into Stage 1's verdict. A pooled Stage 1 + 2 figure may be shown as additional.
+- A Stage 1 verdict is not revised by Stage 2; disagreement between stages is reported as such.
+Nothing else changes.
+
+## Amendment 3 (2026-10-03, Session 30, before any Stage 2 residual was computed for any council)
+The owner released the gate: the two person-only items (West Berkshire earlier years, Reading 2021-05) are on his list and
+no longer hold the big cities. Stage 2 therefore starts with the cities, onboarded in this order: Leeds, then Birmingham.
+Fixed now:
+1. Stage 2 pool = every qualifying unit (the coverage rule and the published-outturn rule of "Units" above, unchanged) of
+   every city onboarded in this session, Leeds (files April 2017 to June 2026, FY2017-18 to FY2024-25 considered) and
+   Birmingham (files July 2024 to July 2026; I expect NO unit, because the only complete year, 2025-26, has no published
+   outturn yet). The units are labelled pool=stage2 in `export/budget_units.csv`, the pool is frozen in
+   `export/budget_units_stage2.csv` and committed BEFORE the Stage 2 statistic is run, and the Stage 1 pool and verdict are
+   not touched.
+2. Same arms, same K and T definitions, same statistic, same nulls, same power rule, same seed. Nothing is tuned to Leeds.
+3. Disclosure of what I have looked at before writing this: for Leeds I have seen the month file sizes and one month's
+   header and first rows; for Birmingham I have seen the row count, the monthly row counts and that 48,162 of the
+   247,785 rows carry the merchant category "Accounts payable PO Accrual - GRNI". I have computed no F, K, R or T for any
+   city unit.
+3b. Freeze record (written before the Stage 2 statistic was run, and honest about what I had already seen): `reconcile all`
+   writes F, K1-K3, R and T_A/T_B for every unit into `export/budget_units.csv` in one step, and I read that table before
+   making the freeze commit, so I had SEEN the per-unit figures of the Leeds and Birmingham units (not the pooled
+   statistic, which had not been run). What I saw that bears on the result: the Leeds file total F is BELOW K2 and K3
+   in all eight eligible units (CORRECTION made in the Session 30 close-out: the committed text said "K1, K2 and K3"; F is above K1 in
+   five of the eight units, 2018-19 to 2022-23, and below it in three), and T_A is 0.00 in all eight (no twin, doubled or repeated-file rows found in Leeds),
+   so T_B is the only non-zero flag tier. Membership of the pool does not depend on those figures: it is fixed by the
+   coverage rule and the published-outturn rule written above, and the freeze file `export/budget_units_stage2.csv`
+   holds exactly the 14 city unit rows that `reconcile all` produced (8 eligible: Leeds 2017-18 to 2024-25). Two code
+   defects were found and fixed before the freeze, both from reading the city rows: (i) the pay-date parser used by the
+   reconciliation did not know the form 14-Sep-2018 that two Leeds files use, which had put 45,602 rows in an unknown
+   year; (ii) a monthly file tag such as 2018-02 was read as a financial year when a row had no date. Neither changes any
+   Stage 1 eligible unit (checked: the six councils' unit table differs from Session 29's only by two non-eligible RBWM
+   pseudo-year rows that disappeared). The statistic and rules are exactly as written above.
+4. A stage-2 unit can be small in number (Leeds at most 8, Birmingham 0). With n below 3 the statistic is not computed;
+   the per-unit arithmetic is still published. A pooled Stage 1 + Stage 2 figure is additional, never the verdict.
+
+## Amendment 4 (2026-10-03, Session 31, before any residual, F/K/R or T was computed for any city onboarded after Amendment 3)
+The big cities continue (Sheffield first, then Manchester, Bradford, Liverpool, Bristol as each is onboarded). Fixed now:
+1. These cities form STAGE 2b, a third pool kept apart from Stage 1 (six councils) and Stage 2 (Leeds, Birmingham, frozen in
+   `export/budget_units_stage2.csv`, which is not touched). Stage 2b = every qualifying unit (coverage rule and
+   published-outturn rule unchanged) of every city onboarded in Session 31. Pool frozen in `export/budget_units_stage2b.csv`
+   and committed BEFORE the Stage 2b statistic is run; if a city is onboarded later in the session it joins a further
+   freeze file `budget_units_stage2c.csv`, never an existing one.
+2. Same arms, same K and T definitions, same statistic, same nulls, same power rule, same seed, nothing tuned. The two
+   Stage 1 and Stage 2 verdicts and their files must reproduce byte for byte after the change (checked and reported).
+3. Disclosure of what I have looked at, written before the first Sheffield residual: the file inventory (101 raw files,
+   2017-01 to 2026-08, 116 payment months), the per-month row counts and signed Value totals printed by the prep step
+   (about GBP 9.27bn over 116 months; monthly totals GBP 52m to 143m), and the header layouts. I have not computed F per
+   financial year against any published figure, no K, R or T. Sheffield's published outturn rows are in the same
+   government files already read for the other councils (ONS code E08000019), and I have not looked at them.
+4. n for Stage 2b is at most 8 per city (2017-18 to 2024-25). With n below 3 the statistic is not computed; the per-unit
+   arithmetic is still published. Pooled figures are additional, never the verdict.
+
+## Amendment 4b (2026-10-03/04, Session 31, still before any residual, F/K/R or T was computed for any Stage 2b city)
+Written after the four cities were onboarded and before `reconcile all` was run with them. Fixed now:
+1. Stage 2b = Sheffield, Bradford, Liverpool, Bristol (every qualifying unit by the coverage rule and the published-outturn rule,
+   unchanged). Manchester is not onboarded (its site refuses scripted downloads, so the files need a person): if it is added
+   later it forms Stage 2c, never a member of an existing freeze file. All four Stage 2b cities were onboarded before the freeze,
+   so a single freeze file `export/budget_units_stage2b.csv` is written and committed before the statistic is run.
+2. Code: `BudgetTest` gains the pool label `stage2b`; those units are skipped in every other mode (stage1, exploratory, stage2,
+   pooled) and are used only by `budgettest stage2b` (output `budget_test_stage2b.csv`) and the additional `budgettest pooledall`
+   (stage 1 + 2 + 2b, never a verdict). Stage 1 (`budget_test.csv`) and Stage 2 (`budget_test_stage2.csv`) must reproduce byte for
+   byte; the check and its result are reported.
+3. What I have looked at before this freeze, for the four cities: Sheffield as in Amendment 4 plus the top Schedule B groups
+   (`topb`); for Bradford, Liverpool and Bristol the file inventories, per-file row counts and signed monthly totals printed by
+   the onboarding run, their header layouts, publication faults found, and the top Schedule B groups. No F per financial year, no
+   K, R or T for any of them, and I have not opened the government outturn rows for E08000032, E08000012, E06000023.
+4. Engine rules added in this session that touch the flagged tiers, and how the frozen definitions are protected: the new
+   Schedule B class `MigrationControlLabel` (Sheffield 37 groups; Birmingham 0) is counted INSIDE T_B exactly as `ReversedSameDay`
+   is, so the pre-registered tier "Unclear or StandingScheduleSurplus as the engine classed them when Stage 1 was run" is not moved.
+   The rule was written after reading Sheffield's top repeat groups and before any residual.
+5. Known weaknesses of the Stage 2b data, stated before the result: Sheffield and Liverpool amounts carry no VAT split and Sheffield
+   has no transaction number (synthetic row ids, so T_A, which needs transaction numbers, is expected to be near zero); Bradford's
+   2025-26 files are not eligible (no outturn yet) and its 2025-07/2025-08 files repeat each other; Liverpool's date is a posting
+   date, not a payment date, so a year's rows can sit in a neighbouring year; Bristol's Dec 2020 file re-lists 11 September 2020
+   payments. None of these is corrected in the figures.
+
+4c. Freeze record (written before the Stage 2b statistic was run, and honest about what I had already seen, as in Amendment 3b):
+   `reconcile all` writes F, K1-K3, R and T_A/T_B for every unit in one step, and I printed the Stage 2b rows of
+   `export/budget_units.csv` before making the freeze commit, so I had SEEN the per-unit figures of the Stage 2b units (not the
+   pooled statistic, which had not been run), contrary to the expectation written in item 3 above. What I saw: 17 eligible units
+   (Sheffield 2019-20 to 2024-25, six; Bradford 2021-22 to 2024-25, four; Liverpool 2023-24 and 2024-25, two; Bristol 2020-21 to
+   2024-25, five); the file total F is below K3 in all 17 (F/K3 0.56 to 0.99), below K2 in 15, and above K1 in four (Sheffield
+   2019-20 1.04, Bradford 2022-23 1.07, 2023-24 1.23, 2024-25 1.21); T_A is 0.00 in all six Sheffield units (synthetic row ids)
+   and 0.00% to 0.04% of F in Bradford and Liverpool, 0.03% to 0.85% in Bristol; T_B is 1.8% to 14.4% of F. Membership of the pool
+   does not depend on those figures: it is fixed by the coverage rule (twelve covered months) and the published-outturn rule
+   written above, and `export/budget_units_stage2b.csv` holds exactly the 35 city unit rows that `reconcile all` produced for the
+   four Stage 2b cities (17 eligible). Sheffield 2017-18 and 2018-19 are not eligible (8 and 11 covered months: the 2017 files hold
+   6,000 to 9,000 rows a month against 20,000 to 40,000 later). Rows of the six councils, Leeds and Birmingham in
+   `budget_units.csv` are byte-identical to the committed Session 30 file (checked: 60 of 60 old rows present unchanged). The
+   statistic and rules are exactly as written above.
+
+## Quantities per unit (all GBP, from the engine's own export, retained AND redacted rows that carry an amount)
+- F = sum of published Net over the unit's rows, each published row counted once (overlap and republished files removed by the
+  existing engine rules; files flagged `FileDuplication` are counted as published, because F is "what the file says").
+- K1 = Revenue Outturn running expenses (C2), all services, plus Housing Revenue Account total expenditure where RO4 gives one.
+  Employees (C1) are NOT in K: payroll is not paid through the supplier ledger.
+- K2 = K1 + Capital Outturn Return total capital expenditure for that council and year.
+- K3 = K2 + OBSERVED pass-through and payroll-liability payments found in the file by payee-name rule, fixed now:
+  payee contains "REVENUE & CUSTOMS" or "HMRC"; "PENSION"; "POLICE" with "CRIME COMMISSIONER" or "THAMES VALLEY POLICE"-style
+  police authority names; "FIRE" with "RESCUE" or "AUTHORITY"; "PARISH COUNCIL"; "TOWN COUNCIL". (These sit in the file but
+  not in revenue running expenses or capital; adding them removes them from the gap by name. Each is shown as its own line.)
+- R = F - K. Positive R means the file is above the comparator.
+- T_A ("published twice" tier) = value of the SECOND and later copies of: (a) transaction twins (`transaction_twins.csv`, kind
+  "identical in every published column except the transaction number" or "one payment, repeated lines"), (b) internally doubled
+  transactions (every line listed an even number of times), (c) exact repeated rows inside a file flagged by `FileDuplication`.
+- T_B ("repeat-payment leads" tier) = T_A + value of the second and later rows of every Schedule B group classed Unclear or
+  StandingScheduleSurplus (excess copies only, never the first). T_B is large and mostly legitimate recurring payments; it is
+  the upper bracket, not a claim.
+- Ratios: r = R / F and t = T / F, so that size of council does not drive the result.
+
+## Arms (A/B/C/D) and declared search width
+Comparator definitions: 3 (K1, K2, K3). Flag tiers: 2 (T_A, T_B). That is 6 combinations; ALL SIX are reported, none is chosen
+afterwards. The primary, fixed now, is K3 with T_A. Table to be filled in the report:
+
+| Arm | Comparator | Flags | Role |
+|---|---|---|---|
+| A | K3 | T_A | PRIMARY |
+| B | K3 | T_B | broad bracket |
+| C | K2 | T_A | no observed pass-through (checks K3 did not manufacture the answer) |
+| D | K1 | T_A | RO only (checks capital added nothing artificial) |
+(K1/T_B, K2/T_B reported as extras, not arms.)
+
+## Statistic and decision rule (primary arm and each other)
+Fit r = beta * t through the origin across units; bootstrap the units 10,000 times for a 95% interval on beta.
+- Null 1 (no relation): beta = 0. Rejected if the interval excludes 0.
+- Null 2 (chance baseline): permute t across units 10,000 times (each unit gets another unit's t) and refit; the real beta must
+  exceed the 97.5th percentile of the permuted betas. This is the baseline for the scale of the comparator noise.
+- Calibration (the power rule): define N = median absolute deviation of r across units. If the median t is below N the test
+  cannot discriminate and the verdict is INCONCLUSIVE whatever beta says.
+Verdicts, in order:
+ 1. INCONCLUSIVE if median t < N, or the interval contains both 0 and 1.
+ 2. SUPPORTED (flagged rows behave like real extra outgoings or real record errors) if the interval excludes 0, contains 1, and
+    beta exceeds the permutation 97.5th percentile.
+ 3. NOT SUPPORTED (flagged rows behave like presentation artefacts) if the interval excludes 1 and contains 0 and median t >= N.
+ 4. Anything else (interval excludes both): reported as an unexpected shape with the numbers, no verdict.
+I expect INCONCLUSIVE for the broad tier because the comparators are only accurate to a few percent of a council's total and
+payments under GBP500, card spend and capital timing sit on the same scale as the flags; if that happens it is the honest result.
+
+## Per-unit arithmetic shown publicly (`export/budget_reconciliation.csv`)
+For each unit: the declared figures (employees C1, running expenses C2, total gross C3, HRA, capital), the file total F, each
+observed pass-through line by name, the residual R, the flagged totals T_A and T_B, and what is left (R - T_A) labelled
+"unexplained". Every line carries a Source (RSX/RO/COR file and year) and a Kind (declared, observed in file, flagged by rule,
+unexplained).
+
+## What this can and cannot prove (stated before the result)
+- The published files cannot show which bank payments left. A positive R equal to T would be consistent with real extra
+  outgoings OR with the same rows being published twice in the record; the comparison cannot separate those two.
+- Revenue Outturn is revenue only and net of recoverable VAT; the file is gross of payment, includes capital, pass-through,
+  loan principal, treasury movements and credit notes. Items I cannot name (payments under GBP500, card spend, payroll, school
+  bank accounts, non-cash charges) stay in "unexplained" and are not allocated.
+- A positive result for the pooled slope does not prove any one flagged payment was duplicated.

@@ -1,0 +1,2 @@
+# Binary-exact, always: no line-ending or encoding rewrite of anything here (Blazor SRI hashes, gzip files, csv slices).
+* -text -diff
