@@ -1,22 +1,23 @@
 Council,Months,Parts,TxRows,ExceptionRows,UnmatchedExceptionRows,LargestMonth,LargestMonthRaw,LargestMonthGzip,LargestExceptionMonthRaw,LargestExceptionMonthGzip,TotalRawMB,TotalGzipMB,ArchiveMB,Name,Short
 wokingham,67,134,217117,49300,0,undated,1106899,174782,680273,82871,43.8,5.3,61.3,Wokingham Borough Council,Wokingham
 merton,114,228,376383,84192,0,2026-03,810776,99584,370615,21012,80.3,8.9,130.5,London Borough of Merton,Merton
-reading,110,218,508453,96517,0,2023-11,1072171,122285,526188,31743,98.0,9.9,180.1,Reading Borough Council,Reading
+reading,110,218,508453,96517,0,2023-11,1072491,122306,526188,31743,98.1,9.9,180.1,Reading Borough Council,Reading
 bracknellforest,100,172,161336,56723,0,2025-07,362262,50485,265429,14647,28.3,3.3,57.7,Bracknell Forest Council,Bracknell Forest
 westberkshire,28,56,91784,14927,0,2025-07,598011,75916,297485,15207,16.3,1.9,22.8,West Berkshire Council,West Berkshire
 rbwm,40,79,68646,10957,0,2026-06,498884,67763,240560,9993,11.2,1.4,31.6,Royal Borough of Windsor and Maidenhead,RBWM
 birmingham,25,51,247785,2909,0,2024-07,2221020,285320,55458,3946,41.5,4.9,54.9,Birmingham City Council,Birmingham
 leeds,116,399,2701271,527865,0,2022-11,4794471,601083,4267790,319956,526.0,54.1,1349.6,Leeds City Council,Leeds
 sheffield,117,397,2638099,712593,0,2023-03,5933893,576649,3365811,143931,566.6,45.5,1276.7,Sheffield City Council,Sheffield
+bradford,77,182,909957,302843,0,2025-09,3983366,508155,4665059,105037,221.6,17.5,389.7,Bradford Metropolitan District Council,Bradford
 liverpool,73,145,547346,225104,0,2025-12,2508473,253849,3206994,84533,156.0,10.4,173.6,Liverpool City Council,Liverpool
 bristol,80,160,469694,67734,0,2021-04,1144548,151578,602804,24435,83.6,10.1,139.6,Bristol City Council,Bristol
-wakefield,111,243,746555,58788,0,2022-11,5790500,335164,385633,21689,96.8,11.4,460.8,Wakefield Metropolitan District Council,Wakefield
+wakefield,111,243,746555,58788,0,2022-11,5790920,335168,385633,21689,96.8,11.4,460.8,Wakefield Metropolitan District Council,Wakefield
 coventry,176,336,1099011,106597,0,2025-03,4799186,274209,978433,31946,176.6,16.5,358.8,Coventry City Council,Coventry
 durham,52,104,285258,25538,0,2024-07,1117159,171437,468221,20497,51.7,7.4,74.6,Durham County Council,Durham
 kirklees,113,226,516440,33485,0,2021-01,882744,129376,162884,11602,58.8,10.5,150.6,Kirklees Council,Kirklees
 leicester,117,233,692704,241209,0,2017-03,1667820,248289,1537685,51379,178.2,17.0,205.5,Leicester City Council,Leicester
 cornwall,83,288,1936816,332491,0,2021-10,6724191,556952,3658104,291386,447.6,37.7,791.4,Cornwall Council,Cornwall
-nottingham,112,222,336170,25372,0,2021-03,1586540,220262,1096434,106639,42.2,7.0,61.6,Nottingham City Council,Nottingham
+nottingham,112,222,336170,25372,0,2021-03,1660790,221998,1170234,111832,42.9,7.1,62.2,Nottingham City Council,Nottingham
 wirral,51,82,341203,200,0,2022-12,1834130,154590,5530,619,48.0,4.9,58.0,Wirral Metropolitan Borough Council,Wirral
 newcastle,103,206,647513,48078,0,2020-04,1078100,131104,1595320,28440,86.1,12.1,175.4,Newcastle City Council,Newcastle
 surrey,112,371,2398241,431772,0,2018-10,6866821,808109,2400662,141675,462.6,48.8,639.5,Surrey County Council,Surrey
