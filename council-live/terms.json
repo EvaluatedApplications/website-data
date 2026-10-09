@@ -1,0 +1,31 @@
+{
+  "copiedFrom": "Showroom/Services/CouncilTerms.cs of the public Council Spending Scanner (the wording of the 'What these words mean' panel, the rule meanings, the schedule titles and definitions, the discrepancy note and the licence credit), as read on 2026-10-07. The wording belongs to the public site; if it changes there, this file is to be regenerated, not edited here.",
+  "discrepancyNote": "A discrepancy here is a fact about the published numbers, not proof of an error or wrongdoing. Councils publish corrections, instalments, and VAT treatments that can look like a mismatch until explained. If you intend to raise this with the council or its auditor, ask for the records and the reason, not for an admission.",
+  "oglCredit": "Contains public sector information licensed under the Open Government Licence v3.0. Council payment data is published by each council under the Local Government Transparency Code.",
+  "schedules": {
+    "A": { "title": "A payment that does not match its stated invoice amount", "definition": "The invoice amount the file states for a transaction (its Gross) is compared with the Gross expected from the payments published for it: each line's Net with its VAT type applied (Standard 20%, Reduced 5%, any other label 0%). The gap shown is the stated Gross minus that expected Gross. A transaction is listed only when the gap is more than 1p; up to 5p is called VAT rounding, under £1 a small gap, £1 or more unreconciled. A fact about the published figures, not a verdict." },
+    "B": { "title": "The same supplier, amount, description and date more than once", "definition": "Lines that share a supplier, an amount, a description and a pay date. Some are explained by a recognised pattern (a standing monthly payment, an exact reversal the same day); the rest are listed as published." },
+    "D": { "title": "One transaction number covering several payees or pay dates", "definition": "The same transaction number appears against more than one payee, or more than one pay date, in the published data. Where a council's own transaction numbers are supplier-furnished invoice numbers, two suppliers can simply have used the same number; this is not read as one payment going to two payees." }
+  },
+  "rank": { "Unreconciled": 0, "StandingScheduleSurplus": 1, "Unclear": 2, "Unmatched": 3, "SmallGap": 4, "ReversedSameDay": 10, "MigrationControlLabel": 11 },
+  "rules": {
+    "Unreconciled": "No specific pattern was recognised: the published numbers do not add up under any of the rules. The file does not say why.",
+    "DoubleListing": "The same invoice line, or the whole itemised invoice, appears to have been published more than once (the lines sum to an exact whole-number multiple of the stated invoice, or of it once VAT is added), rather than several genuinely different charges.",
+    "DebtCharge": "The stated amount splits exactly into a round principal plus a non-round interest or charge remainder: consistent with a loan repayment or debt-recovery invoice, not an unexplained gap.",
+    "EarlyPaymentProgramme": "A batch of negative early-payment discount fees under the council's own named scheme (a supply-chain-finance arrangement): a known pattern, not an arithmetic mismatch.",
+    "VatRoundingNoise": "The gap is a few pence (5p or less), consistent with VAT being rounded per line and then summed, rather than once on the total.",
+    "SmallGap": "The gap is more than 5p and under £1. It is too large to be read as VAT rounding and no pattern accounts for it. The file does not say why.",
+    "NegativeNetSignFlip": "The published net figure is the exact negative of the value needed to reconcile the stated invoice. Reported as a named, recurring shape, not an explanation: why the sign is inverted is not established.",
+    "Unclear": "No supplier invoice number was available to check, so the repeat is reported exactly as published, with no verdict either way. A group may carry a pattern reading beside it; the reading is a consistent fit, not a proof, and the group stays open.",
+    "LikelyDuplicate": "Every member of this group shares the same supplier invoice number as well as the same amount. The file does not show whether more than one payment was made.",
+    "LikelyRecurring": "Members carry different supplier invoice numbers despite the identical amount: consistent with a standardised recurring rate.",
+    "Unmatched": "No same-supplier published charge of matching magnitude was found within 365 days. Not established to be an error; reported as published.",
+    "MatchedOffsettingCharge": "A same-supplier published charge of matching magnitude exists within 365 days: a plausible explanation exists in the data, not a claim that this credit offsets that charge.",
+    "StandingScheduleCatchUp": "This amount is paid about once a month, and this date carries more than one payment because earlier months have none. Counting payments against months, the extra payments are made good by empty months: consistent with a late payment caught up, paid ahead or repaid; not proof of any of them.",
+    "StandingScheduleSurplus": "This amount is paid about once a month, but there are more payments than months and nothing returned in the published data. More payments than months in the published data; the files do not say why. It is listed with the unexplained rows because no pattern accounts for it.",
+    "StandingPaymentUnderRefundType": "No matching charge was found, but the same amount recurs every month under the council's own refund label. What the council means by the label is not stated in the file.",
+    "ReversedSameDay": "The same supplier is also shown with equal-and-opposite lines on the same date, which cancel the extra copies: the lines net to one payment. An explanation of a repeat, not a finding.",
+    "NSquaredListing": "Publication quirk, not extra money: the distinct lines add up to the stated amount to the penny. This payment run prints each payee's lines as many times as the payee has lines, so the row total is not money; the stated invoice amount is the run.",
+    "MigrationControlLabel": "Every line carries the council's own label \"AP MIGRATION CONTROL ACCOUNT\": a ledger-migration control account. The file does not say whether cash left under it. Not a finding."
+  }
+}
