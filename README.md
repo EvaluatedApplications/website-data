@@ -7,6 +7,7 @@ Large static files for evaluatedapplications.github.io (council spending data, P
 | `council-web/` | Council Spending Scanner data (phone-sized slices) | `AboutUs/CouncilWebBuilder` (`dotnet run -c Release --project CouncilWebBuilder`) |
 | `prism/` | Prism checkpoint (`oracle-brain.bin.gz`) and its sidecars, read by Prism, Nano Stories, The Cartographer, The Analyst, Prose | the Prism checkpoint refresh |
 | `_framework/` | The Blazor WebAssembly runtime for `/tools` (hash-named files, plain, no `.br`/`.gz`) | `AboutUs/Showroom/scripts/publish-site.ps1` |
+| `umbrarium/_framework/` | The Blazor WebAssembly runtime of the Umbrarium preset demo (hash-named, plain; its shell is `AboutUs/umbrarium-demo/`, served at `/umbrarium/demo/`) | a MonoRepo publish of `Umbrarium.Web`, copied by the website-owner |
 
 Push this repo BEFORE the site repo (the site's `index.html` fetches hashed runtime files from here). `.gitattributes` is `* -text -diff`: nothing here may be line-ending converted.
 
